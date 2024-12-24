@@ -46,4 +46,12 @@ class Person extends Model
             'parent_id'
         );
     }
+
+    /**
+     * Une personne a été créée par un utilisateur.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }
