@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Person;
 use Illuminate\Http\Request;
 
 class PersonController extends Controller
@@ -13,5 +14,14 @@ class PersonController extends Controller
     {
         $people = Person::with('creator')->get(); // Récupère les personnes avec leur créateur
         return view('people.index', compact('people'));
+    }
+
+    /**
+     * Afficher une personne spécifique avec la liste de ses enfants et parents.
+     */
+    public function show($id)
+    {
+        $person = Person::with('children', 'parents')->findOrFail($id); // Récupère la personne avec ses relations
+        return view('people.show', compact('person'));
     }
 }
