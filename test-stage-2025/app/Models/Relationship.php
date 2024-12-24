@@ -25,4 +25,12 @@ class Relationship extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    /**
+     * Relation avec le parent.
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Person::class, 'parent_id');
+    }
 }
