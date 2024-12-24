@@ -24,4 +24,12 @@ class PersonController extends Controller
         $person = Person::with('children', 'parents')->findOrFail($id); // Récupère la personne avec ses relations
         return view('people.show', compact('person'));
     }
+
+    /**
+     * Afficher le formulaire de création d'une nouvelle personne.
+     */
+    public function create()
+    {
+        return view('people.create');
+    }
 }
