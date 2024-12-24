@@ -32,4 +32,28 @@ class PersonController extends Controller
     {
         return view('people.create');
     }
+
+    /**
+     * Valider les données et insérer une nouvelle personne, puis rediriger vers index.
+     */
+    public function store(Request $request)
+    {
+        // Validation des données
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'birth_name' => 'nullable|string|max:255',
+            'middle_names' => 'nullable|string|max:255',
+            'date_of_birth' => 'nullable|date',
+            'created_by' => 'required|exists:users,id', // L'utilisateur doit exister
+        ]);
+
+        // Création de la personne
+        try {
+            Person::create($validated);
+            return redirect()->route('people.index')->with('success', 'Personne créée avec succès.');
+        } catch (\Exception $e) {
+            return redirect()->route('people.create')->with('error', 'Une erreur est survenue : ' . $e->getMessage());
+        }
+    }
 }
