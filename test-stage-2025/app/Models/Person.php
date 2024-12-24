@@ -33,4 +33,17 @@ class Person extends Model
             'child_id'
         );
     }
+
+    /**
+     * Une personne peut avoir plusieurs parents (relation enfant-parent).
+     */
+    public function parents()
+    {
+        return $this->belongsToMany(
+            Person::class,
+            'relationships',
+            'child_id',
+            'parent_id'
+        );
+    }
 }
