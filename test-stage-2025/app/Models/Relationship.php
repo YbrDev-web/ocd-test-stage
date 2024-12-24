@@ -17,4 +17,12 @@ class Relationship extends Model
         'parent_id',
         'child_id',
     ];
+
+    /**
+     * Relation avec l'utilisateur créateur.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }
