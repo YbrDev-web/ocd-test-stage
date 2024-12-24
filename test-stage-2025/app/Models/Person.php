@@ -20,4 +20,17 @@ class Person extends Model
         'date_of_birth',
         'created_by',
     ];
+
+    /**
+     * Une personne peut avoir plusieurs enfants (relation parent-enfant).
+     */
+    public function children()
+    {
+        return $this->belongsToMany(
+            Person::class,
+            'relationships',
+            'parent_id',
+            'child_id'
+        );
+    }
 }
