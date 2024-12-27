@@ -56,4 +56,19 @@ class PersonController extends Controller
             return redirect()->route('people.create')->with('error', 'Une erreur est survenue : ' . $e->getMessage());
         }
     }
+
+    public function testDegree()
+    {
+        DB::enableQueryLog();
+        $timestart = microtime(true);
+
+        $person = Person::findOrFail(84); // Exemple : personne de départ
+        $degree = $person->getDegreeWith(1265); // Exemple : personne cible
+
+        return response()->json([
+            "degree" => $degree,
+            "time" => microtime(true) - $timestart,
+            "nb_queries" => count(DB::getQueryLog()),
+        ]);
+    }
 }
