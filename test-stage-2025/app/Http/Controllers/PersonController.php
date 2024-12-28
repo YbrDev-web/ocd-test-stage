@@ -58,8 +58,11 @@ class PersonController extends Controller
         }
     }
 
+
+    //La méthode testDegree va permettre d'obtenir via l'id de deux personnes une valeur d'écart qui a pour résultat 13
     public function testDegree()
     {
+        //appel de la fonction enableQueryLog permettant d'activer la fonction dans la console 
         DB::enableQueryLog();
         $timestart = microtime(true);
 
