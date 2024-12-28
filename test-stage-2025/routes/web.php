@@ -14,7 +14,7 @@ use App\Http\Controllers\PersonController;
 |
 */
 
-
+//route permettant l'appelle des diffèrentes pages de l'application via le controller
 Route::get('/people', [PersonController::class, 'index'])->name('people.index');
 Route::get('/people/create', [PersonController::class, 'create'])->name('people.create');
 Route::post('/people', [PersonController::class, 'store'])->name('people.store');

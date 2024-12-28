@@ -1,3 +1,5 @@
+<!-- page permettant de savoir si l'utilisateur a été crée par un message de validation -->
+
 @extends('layouts.app')
 
 @section('content')
