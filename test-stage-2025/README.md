@@ -155,7 +155,7 @@ Afficher les Logs SQL :
 dd(DB::getQueryLog());
 Suivi du Temps d'Exécution : Ajoutez un suivi du temps avec microtime().
 
-![Alt text]('C:\xampp\Test_Technique_Ocd\ocd-test-stage\test-stage-2025\images\execution de la fonction degree dans la console.PNG')
+![test debugging](Images/execution%20de%20la%20fonction%20degree%20dans%20la%20console.PNG)
 
 ## Auteur
 Ce projet a été réalisé dans le cadre d'un test technique pour l'entreprise OCD. Toutes les fonctionnalités demandées ont été implémentées avec Laravel.
