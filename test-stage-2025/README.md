@@ -155,8 +155,6 @@ Afficher les Logs SQL :
 dd(DB::getQueryLog());
 Suivi du Temps d'Exécution : Ajoutez un suivi du temps avec microtime().
 
-![test debugging](Images/execution_de_la_fonction_degree_dans_la_console.PNG);
-
 ## Auteur
 Ce projet a été réalisé dans le cadre d'un test technique pour l'entreprise OCD. Toutes les fonctionnalités demandées ont été implémentées avec Laravel.
 
