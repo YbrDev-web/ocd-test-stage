@@ -1,66 +1,151 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Test Technique OCD - Gestion des Membres de la Famille
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Description
 
-## About Laravel
+Cette application Laravel permet de gérer une base de données de personnes et de relations familiales. Elle inclut les fonctionnalités suivantes :
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Création, consultation et affichage des membres de la famille.
+- Ajout de relations familiales (parent-enfant).
+- Détermination du degré de parenté entre deux personnes.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Installation
 
-## Learning Laravel
+1. **Cloner le dépôt :**
+   ```bash
+   git clone <url-du-depot>
+   cd <nom-du-projet>
+Installer les dépendances :
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+bash
+Copier le code
+composer install
+npm install
+npm run dev
+Configurer l'environnement :
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Copier le fichier .env.example en .env :
+bash
+Copier le code
+cp .env.example .env
+Configurer la base de données dans le fichier .env :
+makefile
+Copier le code
+DB_DATABASE=nom_de_la_base
+DB_USERNAME=nom_utilisateur
+DB_PASSWORD=mot_de_passe
+Générer la clé de l'application :
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+bash
+Copier le code
+php artisan key:generate
+Lancer les migrations et les seeders :
 
-## Laravel Sponsors
+bash
+Copier le code
+php artisan migrate
+Lancer le serveur local :
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+bash
+Copier le code
+php artisan serve
+Fonctionnalités Implémentées
+1. Base de Données
+Deux tables principales ont été créées : people et relationships.
+Table people
+Colonnes :
+id (bigint, clé primaire)
+created_by (bigint, utilisateur créateur)
+first_name, last_name, birth_name, middle_names (informations personnelles)
+date_of_birth (date de naissance)
+timestamps
+Table relationships
+Colonnes :
+id (bigint, clé primaire)
+created_by (bigint, utilisateur créateur)
+parent_id, child_id (relations parent-enfant)
+timestamps
+Index
+Les colonnes created_by, parent_id, et child_id sont indexées pour optimiser les requêtes.
+2. Modèles Eloquent
+Des modèles ont été créés pour chaque table, avec les relations suivantes :
 
-### Premium Partners
+Une personne peut avoir plusieurs parents et plusieurs enfants (belongsToMany).
+Une personne est associée à un utilisateur créateur (belongsTo).
+3. Contrôleur PersonController
+Le PersonController gère les actions suivantes :
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+index : Liste toutes les personnes avec leurs créateurs.
+show : Affiche une personne spécifique avec ses parents et ses enfants.
+create : Affiche le formulaire pour créer une nouvelle personne.
+store : Valide les données et enregistre une nouvelle personne.
+testDegree : Détermine le degré de parenté entre deux personnes.
+4. Routes
+Les routes suivantes ont été définies dans web.php :
 
-## Contributing
+php
+Copier le code
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\RelationshipController;
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+// Routes pour les personnes
+Route::get('/people', [PersonController::class, 'index'])->name('people.index');
+Route::get('/people/create', [PersonController::class, 'create'])->name('people.create');
+Route::post('/people', [PersonController::class, 'store'])->name('people.store');
+Route::get('/people/{id}', [PersonController::class, 'show'])->name('people.show');
 
-## Code of Conduct
+// Test de parenté
+Route::get('/people/test-degree', [PersonController::class, 'testDegree']);
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+// Routes pour les relations familiales
+Route::get('/relationships/create', [RelationshipController::class, 'createRelationship'])->name('relationships.create');
+Route::post('/relationships', [RelationshipController::class, 'storeRelationship'])->name('relationships.store');
+5. Vues
+Layout Général
+Le layout principal (resources/views/layouts/app.blade.php) contient le design commun.
 
-## Security Vulnerabilities
+Vues Disponibles
+index.blade.php : Affiche la liste des personnes.
+show.blade.php : Affiche les détails d'une personne et ses relations familiales.
+create.blade.php : Formulaire de création de nouvelles personnes.
+relationships/create.blade.php : Formulaire pour ajouter une relation parent-enfant.
+6. Méthode pour Calculer le Degré de Parenté
+La méthode getDegreeWith($target_person_id) a été ajoutée au modèle Person pour déterminer le degré de parenté entre deux personnes.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Exemple d'Utilisation
+php
+Copier le code
+DB::enableQueryLog();
+$timestart = microtime(true);
 
-## License
+$person = App\Models\Person::findOrFail(84);
+$degree = $person->getDegreeWith(1265);
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+var_dump([
+    "degree" => $degree,
+    "time" => microtime(true) - $timestart,
+    "nb_queries" => count(DB::getQueryLog()),
+]);
+Tests et Debugging
+Activer le Log des Requêtes SQL :
+
+php
+Copier le code
+DB::enableQueryLog();
+Afficher les Logs SQL :
+
+php
+Copier le code
+dd(DB::getQueryLog());
+Suivi du Temps d'Exécution : Ajoutez un suivi du temps dans vos scripts pour évaluer les performances.
+
+Auteur
+Ce projet a été réalisé dans le cadre d'un test technique OCD. Toutes les fonctionnalités respectent les exigences demandées.
+
+Copier le code
+
+
+
+
+
