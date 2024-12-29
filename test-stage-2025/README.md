@@ -1,12 +1,32 @@
 # Test Technique OCD - Gestion des Membres de la Famille
 
-## Description
+Ce projet Laravel implémente une application de gestion de membres de famille, permettant la création de profils, la définition de relations familiales, et le calcul de degrés de parenté.
 
-Cette application Laravel permet de gérer une base de données de personnes et de relations familiales. Elle inclut les fonctionnalités suivantes :
+---
 
-- Création, consultation et affichage des membres de la famille.
-- Ajout de relations familiales (parent-enfant).
-- Détermination du degré de parenté entre deux personnes.
+## Table des Matières
+
+1. [Prérequis](#prérequis)
+2. [Installation](#installation)
+3. [Fonctionnalités](#fonctionnalités)
+   - [Modèles de Données](#modèles-de-données)
+   - [Relations Eloquent](#relations-eloquent)
+   - [Contrôleurs](#contrôleurs)
+   - [Routes](#routes)
+   - [Vues](#vues)
+4. [Calcul du Degré de Parenté](#calcul-du-degré-de-parenté)
+5. [Tests et Debugging](#tests-et-debugging)
+6. [Auteur](#auteur)
+
+---
+
+## Prérequis
+
+- PHP >= 8.0
+- Composer
+- Node.js & npm
+- MySQL ou MariaDB
+- Laravel >= 9.x
 
 ---
 
@@ -14,7 +34,7 @@ Cette application Laravel permet de gérer une base de données de personnes et 
 
 1. **Cloner le dépôt :**
    ```bash
-   git clone <url-du-depot>
+   git clone <url-du-dépôt>
    cd <nom-du-projet>
 Installer les dépendances :
 
@@ -30,7 +50,7 @@ bash
 Copier le code
 cp .env.example .env
 Configurer la base de données dans le fichier .env :
-makefile
+env
 Copier le code
 DB_DATABASE=nom_de_la_base
 DB_USERNAME=nom_utilisateur
@@ -40,7 +60,7 @@ Générer la clé de l'application :
 bash
 Copier le code
 php artisan key:generate
-Lancer les migrations et les seeders :
+Exécuter les migrations :
 
 bash
 Copier le code
@@ -50,39 +70,45 @@ Lancer le serveur local :
 bash
 Copier le code
 php artisan serve
-Fonctionnalités Implémentées
-1. Base de Données
-Deux tables principales ont été créées : people et relationships.
+Fonctionnalités
+Modèles de Données
 Table people
+Gère les profils des personnes.
 Colonnes :
-id (bigint, clé primaire)
-created_by (bigint, utilisateur créateur)
-first_name, last_name, birth_name, middle_names (informations personnelles)
-date_of_birth (date de naissance)
-timestamps
+id : Identifiant unique.
+created_by : Référence à l'utilisateur créateur.
+first_name, last_name, birth_name, middle_names : Informations personnelles.
+date_of_birth : Date de naissance.
+timestamps : Champs created_at et updated_at.
 Table relationships
+Gère les relations parent-enfant.
 Colonnes :
-id (bigint, clé primaire)
-created_by (bigint, utilisateur créateur)
-parent_id, child_id (relations parent-enfant)
-timestamps
-Index
-Les colonnes created_by, parent_id, et child_id sont indexées pour optimiser les requêtes.
-2. Modèles Eloquent
-Des modèles ont été créés pour chaque table, avec les relations suivantes :
+id : Identifiant unique.
+created_by : Référence à l'utilisateur créateur.
+parent_id et child_id : Relations parent-enfant.
+timestamps : Champs created_at et updated_at.
+Relations Eloquent
+Les relations définies dans les modèles incluent :
 
-Une personne peut avoir plusieurs parents et plusieurs enfants (belongsToMany).
-Une personne est associée à un utilisateur créateur (belongsTo).
-3. Contrôleur PersonController
-Le PersonController gère les actions suivantes :
+Relations parent-enfant :
 
+Une personne peut avoir plusieurs enfants : hasMany.
+Une personne peut avoir plusieurs parents : belongsToMany.
+Utilisateur créateur :
+
+Une personne est associée à un utilisateur créateur : belongsTo.
+Contrôleurs
+PersonController
 index : Liste toutes les personnes avec leurs créateurs.
-show : Affiche une personne spécifique avec ses parents et ses enfants.
-create : Affiche le formulaire pour créer une nouvelle personne.
+show : Affiche une personne et ses relations (enfants et parents).
+create : Affiche un formulaire pour créer une nouvelle personne.
 store : Valide les données et enregistre une nouvelle personne.
-testDegree : Détermine le degré de parenté entre deux personnes.
-4. Routes
-Les routes suivantes ont été définies dans web.php :
+testDegree : Calcule le degré de parenté entre deux personnes.
+RelationshipController
+createRelationship : Affiche un formulaire pour ajouter une relation parent-enfant.
+storeRelationship : Enregistre une relation parent-enfant.
+Routes
+Les routes définies dans le fichier web.php sont les suivantes :
 
 php
 Copier le code
@@ -94,24 +120,22 @@ Route::get('/people', [PersonController::class, 'index'])->name('people.index');
 Route::get('/people/create', [PersonController::class, 'create'])->name('people.create');
 Route::post('/people', [PersonController::class, 'store'])->name('people.store');
 Route::get('/people/{id}', [PersonController::class, 'show'])->name('people.show');
-
-// Test de parenté
 Route::get('/people/test-degree', [PersonController::class, 'testDegree']);
 
-// Routes pour les relations familiales
+// Routes pour les relations
 Route::get('/relationships/create', [RelationshipController::class, 'createRelationship'])->name('relationships.create');
 Route::post('/relationships', [RelationshipController::class, 'storeRelationship'])->name('relationships.store');
-5. Vues
+Vues
 Layout Général
-Le layout principal (resources/views/layouts/app.blade.php) contient le design commun.
+Un layout général est défini dans resources/views/layouts/app.blade.php et utilisé dans toutes les vues.
 
 Vues Disponibles
 index.blade.php : Affiche la liste des personnes.
-show.blade.php : Affiche les détails d'une personne et ses relations familiales.
-create.blade.php : Formulaire de création de nouvelles personnes.
-relationships/create.blade.php : Formulaire pour ajouter une relation parent-enfant.
-6. Méthode pour Calculer le Degré de Parenté
-La méthode getDegreeWith($target_person_id) a été ajoutée au modèle Person pour déterminer le degré de parenté entre deux personnes.
+show.blade.php : Affiche les détails d'une personne.
+create.blade.php : Formulaire de création d'une personne.
+relationships/create.blade.php : Formulaire pour ajouter une relation.
+Calcul du Degré de Parenté
+La méthode getDegreeWith($target_person_id) dans le modèle Person calcule le degré de parenté entre deux personnes.
 
 Exemple d'Utilisation
 php
@@ -128,7 +152,7 @@ var_dump([
     "nb_queries" => count(DB::getQueryLog()),
 ]);
 Tests et Debugging
-Activer le Log des Requêtes SQL :
+Activer le Log SQL :
 
 php
 Copier le code
@@ -138,12 +162,18 @@ Afficher les Logs SQL :
 php
 Copier le code
 dd(DB::getQueryLog());
-Suivi du Temps d'Exécution : Ajoutez un suivi du temps dans vos scripts pour évaluer les performances.
+Suivi du Temps d'Exécution : Ajoutez un suivi du temps avec microtime().
 
 Auteur
-Ce projet a été réalisé dans le cadre d'un test technique OCD. Toutes les fonctionnalités respectent les exigences demandées.
+Ce projet a été réalisé dans le cadre d'un test technique OCD. Toutes les fonctionnalités demandées ont été implémentées avec Laravel.
 
-Copier le code
+
+
+
+
+
+
+
 
 
 
