@@ -17,6 +17,16 @@
                     <a href="{{ route('people.create') }}" class="btn btn-outline-success">Créer une personne</a>
                 </div>
             </div>
+            <div>
+    @guest
+        <a href="{{ route('login') }}" class="btn btn-outline-primary">Connexion</a>
+    @else
+        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+            @csrf
+            <button type="submit" class="btn btn-outline-danger">Déconnexion</button>
+        </form>
+    @endguest
+</div>
         </nav>
     </header>
     <main class="container mt-4">
