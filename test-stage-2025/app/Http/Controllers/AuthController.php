@@ -7,33 +7,45 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Afficher le formulaire de connexion
+    /**
+     * Affiche le formulaire de connexion.
+     */
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Gérer la soumission du formulaire de connexion
+    /**
+     * Gère la tentative de connexion.
+     */
     public function login(Request $request)
     {
+        // Validation des champs du formulaire
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|min:4',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('people.index')->with('success', 'Connexion réussie.');
+        // Tentative de connexion avec les identifiants fournis
+        if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
+            // Redirige vers la page d'accueil après connexion
+            return redirect()->intended('dashboard')->with('success', 'Connexion réussie.');
         }
 
-        return back()->withErrors(['email' => 'Les informations d’identification ne sont pas correctes.']);
+        // Retourne une erreur si les identifiants sont incorrects
+        return back()->withErrors([
+            'email' => 'Ces identifiants ne correspondent pas à nos enregistrements.',
+        ])->onlyInput('email');
     }
 
-    // Déconnexion
+    /**
+     * Déconnecte l'utilisateur.
+     */
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login')->with('success', 'Déconnexion réussie.');
+        return redirect('/login')->with('success', 'Déconnexion réussie.');
     }
-    
 }
+
 
