@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\auth\registerController;
+use App\Http\Controllers\LogoutController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,8 +24,8 @@ Route::post('/people', [PersonController::class, 'store'])->name('people.store')
 Route::get('/people/{id}', [PersonController::class, 'show'])->name('people.show');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/people/{id}/edit', [PersonController::class, 'edit'])->name('people.edit');
 Route::put('/people/{id}', [PersonController::class, 'update'])->name('people.update');
 Route::get('/register', [registerController::class, 'showRegistrationForm'])->name('register.form');
 Route::post('/register', [registerController::class, 'register'])->name('register');
+Route::post('/logout', [LogoutController::class, 'logout']);
