@@ -37,14 +37,6 @@ class AuthController extends Controller
             'email' => 'Ces identifiants ne correspondent pas à nos enregistrements.',
         ])->onlyInput('email');
     }
-
-    /**
-     * Déconnecte l'utilisateur.
-     */
-    public function logout()
-    {
-        return redirect('/register')->with('success', 'Déconnexion réussie.');
-    }
 }
 
 

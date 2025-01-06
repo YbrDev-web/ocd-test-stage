@@ -3,8 +3,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonController;
-use App\Http\Controllers\auth\AuthController;
-use App\Http\Controllers\auth\registerController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\registerController;
 use App\Http\Controllers\LogoutController;
 /*
 |--------------------------------------------------------------------------
