@@ -155,7 +155,11 @@ Afficher les Logs SQL :
 dd(DB::getQueryLog());
 Suivi du Temps d'Exécution : Ajoutez un suivi du temps avec microtime().
 
-## Auteur
+## - lien diagramme
+
+https://dbdiagram.io/d/677801db5406798ef73675d9
+
+## - Auteur
 Ce projet a été réalisé dans le cadre d'un test technique pour l'entreprise OCD. Toutes les fonctionnalités demandées ont été implémentées avec Laravel.
 
 
