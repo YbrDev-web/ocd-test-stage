@@ -25,8 +25,8 @@ Route::get('/people/{id}', [PersonController::class, 'show'])->name('people.show
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
-Route::get('/people/{id}/edit', [PersonController::class, 'edit'])->name('people.edit');
-Route::put('/people/{id}', [PersonController::class, 'update'])->name('people.update');
+Route::get('/people/update', [PersonController::class, 'edit'])->name('people.update');
+Route::put('/people/update', [PersonController::class, 'edit'])->name('people.update');
 Route::get('/register', [registerController::class, 'showRegistrationForm'])->name('register.form');
 Route::post('/register', [registerController::class, 'register'])->name('register');
 

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -12,31 +15,50 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('auth.login'); // Assurez-vous que cette vue existe
     }
 
     /**
-     * Gère la tentative de connexion.
+     * Gère la connexion d'un utilisateur.
      */
     public function login(Request $request)
     {
-        // Validation des champs du formulaire
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:4',
+        // Validation des champs de connexion
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|max:255',
         ]);
 
-        // Tentative de connexion avec les identifiants fournis
-        if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
-            // Redirige vers la page d'accueil après connexion
-            return redirect()->intended('dashboard')->with('success', 'Connexion réussie.');
+        // En cas d'échec de validation
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        // Retourne une erreur si les identifiants sont incorrects
-        return back()->withErrors([
-            'email' => 'Ces identifiants ne correspondent pas à nos enregistrements.',
-        ])->onlyInput('email');
+        // Tentative de connexion
+        $credentials = $request->only('email', 'password');
+        if (Auth::attempt($credentials)) {
+            // Connexion réussie
+            return redirect()->route('people.index')->with('success', 'Connexion réussie !');
+        }
+
+        // Connexion échouée
+        return redirect()->back()
+            ->withErrors(['email' => 'Ces informations d’identification ne correspondent pas à nos enregistrements.'])
+            ->withInput();
+    }
+
+    /**
+     * Déconnecte l'utilisateur.
+     */
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route('login')->with('success', 'Vous êtes maintenant déconnecté.');
     }
 }
+
 
 

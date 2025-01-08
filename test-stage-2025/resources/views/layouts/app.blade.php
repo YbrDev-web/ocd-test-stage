@@ -15,6 +15,7 @@
                 <div>
                     <a href="{{ route('people.index') }}" class="btn btn-outline-primary">Liste des personnes</a>
                     <a href="{{ route('people.create') }}" class="btn btn-outline-success">Créer une personne</a>
+                    <a href="{{ route('people.update') }}" class="btn btn-outline-success">Modifier une personne</a>
                     <a href="{{ route('register') }}" class="btn btn-outline-primary">inscription</a>
                 </div>
             </div>
