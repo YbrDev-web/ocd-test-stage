@@ -67,16 +67,18 @@ DB_PASSWORD=
 
 
 php artisan key:generate
-4. **Exécuter les migrations :**
+4. **Exécuter les migrations .**
 php artisan migrate
 
-5. **Lancer le serveur local :**
+5. **Lancer le serveur local .**
 
 
 php artisan serve
 Fonctionnalités
 Modèles de Données
 Table people
+
+
 6. **Gère les profils des personnes.**
 Colonnes :
 id : Identifiant unique.
