@@ -58,6 +58,13 @@ DB_USERNAME=nom_utilisateur
 DB_PASSWORD=mot_de_passe
 Générer la clé de l'application :
 
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ocd_project
+DB_USERNAME=root
+DB_PASSWORD=
+
 
 php artisan key:generate
 4. **Exécuter les migrations :**
@@ -108,8 +115,11 @@ storeRelationship : Enregistre une relation parent-enfant.
 ## Routes
 Les routes définies dans le fichier web.php sont les suivantes :
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PersonController;
-use App\Http\Controllers\RelationshipController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\registerController;
+use App\Http\Controllers\LogoutController;
 
 ## Routes pour les personnes
 Route::get('/people', [PersonController::class, 'index'])->name('people.index');
