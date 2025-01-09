@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\registerController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\UpdateController;
+use App\Http\Controllers\DeleteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
