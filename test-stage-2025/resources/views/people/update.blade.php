@@ -24,9 +24,25 @@
         </div>
 
         <div class="mb-3">
-            <label for="email" class="form-label">Email :</label>
-            <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $person->email) }}" required>
-            @error('email')
+            <label for="birth_name" class="form-label">birth_name :</label>
+            <input type="text" id="birth_name" name="birth_name" class="form-control" value="{{ old('birth_name', $person->birth_name) }}" required>
+            @error('birth_name')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">middle_names :</label>
+            <input type="text" id="middle_names" name="middle_names" class="form-control" value="{{ old('middle_names', $person->middle_names) }}" required>
+            @error('middle_names')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="date_of_birth" class="form-label">date_of_birth :</label>
+            <input type="text" id="date_of_birth" name="date_of_birth" class="form-control" value="{{ old('date_of_birth', $person->date_of_birth) }}" required>
+            @error('date_of_birth')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
