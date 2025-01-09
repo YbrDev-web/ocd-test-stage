@@ -31,4 +31,4 @@ Route::get('/people/{id}/update', [UpdateController::class, 'edit'])->name('peop
 Route::put('/people/update', [UpdateController::class, 'edit'])->name('people.update');
 Route::get('/register', [registerController::class, 'showRegistrationForm'])->name('register.form');
 Route::post('/register', [registerController::class, 'register'])->name('register');
-
+Route::get('/people/{id}', [DeleteController::class, 'delete'])->name('people.delete');
